@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:nadagram/db/db_service.dart';
+import 'package:nadagram/pages/main_layout.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await DatabaseService.initialize();
   runApp(const MainApp());
 }
 
@@ -9,12 +13,9 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      home: const MainLayout()
     );
   }
 }
