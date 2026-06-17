@@ -36,8 +36,8 @@ class _ContentTileState extends State<ContentTile> {
   @override
   Widget build(BuildContext context) {
     final NadagramContentRepository nadaRepo = NadagramContentRepository();
-    UserRepository repo = UserRepository();
-    final isFavorite = repo.getAllFavorites().contains(widget.content.key);
+    UserRepository userRepo = UserRepository();
+    final isFavorite = userRepo.getAllFavorites().contains(widget.content.key);
     return Column (
       crossAxisAlignment: .start,
       children: [
@@ -76,10 +76,10 @@ class _ContentTileState extends State<ContentTile> {
                   onPressed: () async {
                     if (!isFavorite) {
                       animateOnPressed();
-                      await repo.addNewFavorite(widget.content.key);
+                      await userRepo.addNewFavorite(widget.content.key);
                       await nadaRepo.addLikes(widget.content.key);
                     } else {
-                      await repo.removeFavorite(widget.content.key);
+                      await userRepo.removeFavorite(widget.content.key);
                       await nadaRepo.removeLikes(widget.content.key);
                     }
                   },

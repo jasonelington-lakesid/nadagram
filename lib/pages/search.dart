@@ -12,12 +12,12 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   String keyword = '';
-  NadagramContentRepository repo = NadagramContentRepository();
+  NadagramContentRepository contentRepo = NadagramContentRepository();
   final searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    List<NadagramContent> searchResult = repo.getContents(keyword).reversed.toList();
+    List<NadagramContent> searchResult = contentRepo.getContents(keyword).reversed.toList();
     return  Scaffold(
       appBar: AppBar(
         title: Text('Search')

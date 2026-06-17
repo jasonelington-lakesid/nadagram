@@ -13,7 +13,7 @@ class MainLayout extends StatefulWidget {
 }
 
 class _MainLayoutPageState extends State<MainLayout> {
-  final NadagramContentRepository repo = NadagramContentRepository();
+  final NadagramContentRepository contentRepo = NadagramContentRepository();
   @override
   Widget build(BuildContext context) {
     return Scaffold(

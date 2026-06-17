@@ -7,7 +7,7 @@ class AddContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final NadagramContentRepository repo = NadagramContentRepository();
+    final NadagramContentRepository contentRepo = NadagramContentRepository();
     final titleController = TextEditingController();
     final descController = TextEditingController();
     final imageController = TextEditingController();
@@ -70,7 +70,7 @@ class AddContent extends StatelessWidget {
                                 likeCount: 0
                               );
 
-                            await repo.addNewContent(content);
+                            await contentRepo.addNewContent(content);
                             if (!context.mounted) return;
                             Navigator.pop(context);
                             }, 
