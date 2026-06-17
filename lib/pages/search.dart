@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:nadagram/db/models/content.dart';
 import 'package:nadagram/db/repositories/content.dart';
+import 'package:nadagram/db/repositories/user.dart';
 import 'package:nadagram/obj/content_tile.dart';
 
 class SearchPage extends StatefulWidget {
@@ -13,6 +15,7 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> {
   String keyword = '';
   NadagramContentRepository contentRepo = NadagramContentRepository();
+  UserRepository userRepo = UserRepository();
   final searchController = TextEditingController();
 
   @override
@@ -49,10 +52,15 @@ class _SearchPageState extends State<SearchPage> {
 
             searchResult.isNotEmpty
             ? Expanded(
-                child: ListView.builder(
-                  itemCount: searchResult.length,
-                  itemBuilder: (context, index) {
-                    return ContentTile(content: searchResult[index]);
+                child: ValueListenableBuilder(
+                  valueListenable: userRepo.box.listenable(), 
+                  builder: (context, box, _) {
+                    return ListView.builder(
+                      itemCount: searchResult.length,
+                      itemBuilder: (context, index) {
+                        return ContentTile(content: searchResult[index]);
+                      }
+                    );
                   }
                 )
             )

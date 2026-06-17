@@ -19,7 +19,7 @@ class _ContentTileState extends State<ContentTile> {
   bool descExpanded = false;
   bool isAnimate = false;
 
-  void animateOnPressed() async {
+  void _animateOnPressed() async {
     setState(() {
       isAnimate = true;
     });
@@ -75,7 +75,7 @@ class _ContentTileState extends State<ContentTile> {
                 child: IconButton(
                   onPressed: () async {
                     if (!isFavorite) {
-                      animateOnPressed();
+                      _animateOnPressed();
                       await userRepo.addNewFavorite(widget.content.key);
                       await contentRepo.addLikes(widget.content.key);
                     } else {
