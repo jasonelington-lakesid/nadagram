@@ -46,6 +46,7 @@ class AddContent extends StatelessWidget {
                         );
 
                       await repo.addNewContent(content);
+                      if (!context.mounted) return;
                       Navigator.pop(context);
                       }, 
                       child: Text('POST!')
