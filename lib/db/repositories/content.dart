@@ -8,12 +8,22 @@ class NadagramContentRepository {
     await box.add(content);
   }
 
-  Future<void> addLikes(int index, int likeCount) async {
+  Future<void> addLikes(int index) async {
     final content = box.get(index);
 
     if (content == null) return;
 
-    content.likeCount = likeCount + 1;
+    content.likeCount = content.likeCount + 1;
+
+    await box.put(index, content);
+  }
+
+  Future<void> removeLikes(int index) async {
+    final content = box.get(index);
+
+    if (content == null) return;
+
+    content.likeCount = content.likeCount - 1;
 
     await box.put(index, content);
   }

@@ -17,6 +17,21 @@ class ContentTile extends StatefulWidget{
 
 class _ContentTileState extends State<ContentTile> {
   bool descExpanded = false;
+  bool isAnimate = false;
+
+  void animateOnPressed() async {
+    setState(() {
+      isAnimate = true;
+    });
+
+    await Future.delayed(const Duration(milliseconds: 200));
+
+    if(mounted) {
+      setState(() {
+        isAnimate = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -54,18 +69,26 @@ class _ContentTileState extends State<ContentTile> {
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               
-              IconButton(
-                onPressed: () async {
-                  if (!isFavorite) {
-                    await repo.addNewFavorite(widget.content.key);
-                    await nadaRepo.addLikes(widget.content.key, widget.content.likeCount);
-                  }
-                },
-                icon: Icon(
-                  Icons.favorite,
-                  color: isFavorite
-                    ? Colors.red
-                    : Colors.grey,
+              AnimatedScale(
+                scale: isAnimate ? 1.3 : 1.0, 
+                duration: const Duration(milliseconds: 200),
+                child: IconButton(
+                  onPressed: () async {
+                    if (!isFavorite) {
+                      animateOnPressed();
+                      await repo.addNewFavorite(widget.content.key);
+                      await nadaRepo.addLikes(widget.content.key);
+                    } else {
+                      await repo.removeFavorite(widget.content.key);
+                      await nadaRepo.removeLikes(widget.content.key);
+                    }
+                  },
+                  icon: Icon(
+                    Icons.favorite,
+                    color: isFavorite
+                      ? Colors.red
+                      : Colors.grey,
+                  ),
                 ),
               ),
 

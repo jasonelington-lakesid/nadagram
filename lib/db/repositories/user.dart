@@ -11,6 +11,14 @@ class UserRepository {
     await box.put('currentUser', user);
   }
 
+  Future<void> removeFavorite(int contentIndex) async {
+    User user = box.get('currentUser') ??
+      User(favorited: {});
+
+    user.favorited.remove(contentIndex);
+    await box.put('currentUser', user);
+  }
+
   Set<int> getAllFavorites() {
     return box.get('currentUser')?.favorited ?? {};
   }
