@@ -11,12 +11,12 @@ class NadagramContentView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final NadagramContentRepository nadaRepo = NadagramContentRepository();
+    final NadagramContentRepository contentRepo = NadagramContentRepository();
     final UserRepository useRepo = UserRepository();
     return ValueListenableBuilder(
       valueListenable: useRepo.box.listenable(),
       builder: (context, box, _) {
-        final contents = nadaRepo.getAll().reversed.toList();
+        final contents = contentRepo.getAll().reversed.toList();
         return ListView.builder(
           itemCount: contents.length,
           itemBuilder: (context, index) {
