@@ -5,11 +5,13 @@
 import 'package:hive_ce/hive_ce.dart';
 import 'package:nadagram/db/models/content.dart';
 import 'package:nadagram/db/models/user.dart';
+import 'package:nadagram/db/models/user_setting.dart';
 
 extension HiveRegistrar on HiveInterface {
   void registerAdapters() {
     registerAdapter(NadagramContentAdapter());
     registerAdapter(UserAdapter());
+    registerAdapter(UserSettingAdapter());
   }
 }
 
@@ -17,5 +19,6 @@ extension IsolatedHiveRegistrar on IsolatedHiveInterface {
   void registerAdapters() {
     registerAdapter(NadagramContentAdapter());
     registerAdapter(UserAdapter());
+    registerAdapter(UserSettingAdapter());
   }
 }
