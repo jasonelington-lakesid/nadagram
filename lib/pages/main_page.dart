@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:nadagram/db/repositories/content.dart';
 import 'package:nadagram/pages/add_content.dart';
 import 'package:nadagram/pages/content.dart';
+import 'package:nadagram/pages/search.dart';
 
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key,});
@@ -17,10 +19,25 @@ class _MainLayoutPageState extends State<MainLayout> {
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 100,
-        title: SearchBar(
-          hintText: 'Search for Title/Captions'
+        title: Text(
+          'Nadagram',
+          style: GoogleFonts.poppins(
+            fontWeight: .bold,
+            fontSize: 24,
+          )
         ),
         actions: [
+          IconButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SearchPage()
+                )
+              );
+            },
+            icon: Icon(Icons.search)
+          ),
           IconButton(
             onPressed: () async {
               await Navigator.push(

@@ -21,4 +21,18 @@ class NadagramContentRepository {
   List<NadagramContent> getAll() {
     return box.values.toList();
   }
+
+  List<NadagramContent> getContents(String keyword) {
+    final contents = box.values.toList();
+
+    final filteredContent = contents.where(
+      (content) {
+        final query = keyword.toLowerCase();
+        return content.title.toLowerCase().contains(query) ||
+          (content.description.toLowerCase().contains(query));
+      }
+    ).toList();
+
+    return filteredContent;
+  }
 }
