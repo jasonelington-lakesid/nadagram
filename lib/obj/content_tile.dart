@@ -3,7 +3,7 @@ import 'package:nadagram/db/models/content.dart';
 import 'package:nadagram/db/repositories/content.dart';
 import 'package:nadagram/db/repositories/user.dart';
 
-class ContentTile extends StatelessWidget{
+class ContentTile extends StatefulWidget{
   final NadagramContent content;
 
   const ContentTile({
@@ -12,17 +12,24 @@ class ContentTile extends StatelessWidget{
   });
 
   @override
+  State<ContentTile> createState() => _ContentTileState();
+}
+
+class _ContentTileState extends State<ContentTile> {
+  bool descExpanded = false;
+
+  @override
   Widget build(BuildContext context) {
     final NadagramContentRepository nadaRepo = NadagramContentRepository();
     UserRepository repo = UserRepository();
-    final isFavorite = repo.getAllFavorites().contains(content.key);
+    final isFavorite = repo.getAllFavorites().contains(widget.content.key);
     return Column (
       crossAxisAlignment: .start,
       children: [
         AspectRatio(
           aspectRatio: 1 / 1,
           child: Image.network(
-            content.imagePath,
+            widget.content.imagePath,
             fit: BoxFit.cover,
           )),
         Padding(
@@ -30,15 +37,15 @@ class ContentTile extends StatelessWidget{
           child: Row(
             children: [
               Text(
-                content.title,
+                widget.content.title,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
               
               IconButton(
                 onPressed: () async {
                   if (!isFavorite) {
-                    await repo.addNewFavorite(content.key);
-                    await nadaRepo.addLikes(content.key, content.likeCount);
+                    await repo.addNewFavorite(widget.content.key);
+                    await nadaRepo.addLikes(widget.content.key, widget.content.likeCount);
                   }
                 },
                 icon: Icon(
@@ -50,21 +57,43 @@ class ContentTile extends StatelessWidget{
               ),
 
               Text(
-                content.likeCount.toString(),
+                widget.content.likeCount.toString(),
                 style: Theme.of(context).textTheme.bodyMedium
               )
             ],
           )
         ),
 
-        content.description.isNotEmpty ?
-          Padding(
-            padding: const EdgeInsets.all(8),
-            child: Text(
-              content.description,
-              style: Theme.of(context).textTheme.bodyMedium,
-            )
-          ) : const SizedBox.shrink(),
+        Column(
+          children: [
+            widget.content.description.isNotEmpty ?
+            Padding(
+              padding: const EdgeInsets.all(8),
+              child: Text(
+                widget.content.description,
+                style: Theme.of(context).textTheme.bodyMedium,
+                maxLines: descExpanded ? null : 2,
+                overflow: descExpanded
+                            ? TextOverflow.visible
+                            : TextOverflow.ellipsis
+              )
+            ) : const SizedBox.shrink(),
+            
+            if (widget.content.description.length > 100)
+              TextButton(
+                onPressed: () {
+                  setState(() {
+                    descExpanded = !descExpanded;
+                  });
+                }, 
+                child: Text(
+                  descExpanded
+                        ? 'Show Less'
+                        : 'Show More'
+                )
+              )
+          ],
+        ),
 
         Divider()
       ],
