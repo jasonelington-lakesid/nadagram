@@ -15,7 +15,6 @@ class NadagramContentView extends StatelessWidget {
       valueListenable: repo.box.listenable(),
       builder: (context, box, _) {
         final contents = box.values.toList();
-        print(box.length);
         return ListView.builder(
           itemCount: contents.length,
           itemBuilder: (context, index) {
