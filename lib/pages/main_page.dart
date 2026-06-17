@@ -42,11 +42,9 @@ class _MainLayoutPageState extends State<MainLayout> {
             right: 8,
           ),
           child: 
-            Expanded(
-              child: NadagramContentView()
-            )
+            NadagramContentView()
           )
-        )
+      )
     );
   }
 }
