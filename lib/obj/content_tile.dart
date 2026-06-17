@@ -14,8 +14,12 @@ class ContentTile extends StatelessWidget{
     return Column (
       crossAxisAlignment: .start,
       children: [
-        Image.network(content.imagePath),
-
+        AspectRatio(
+          aspectRatio: 1 / 1,
+          child: Image.network(
+            content.imagePath,
+            fit: BoxFit.cover,
+          )),
         Padding(
           padding: const EdgeInsets.all(8 ),
           child: Row(
@@ -42,7 +46,9 @@ class ContentTile extends StatelessWidget{
             content.description,
             style: Theme.of(context).textTheme.bodyMedium,
           )
-        )
+        ),
+
+        Divider()
       ],
     );
   }
