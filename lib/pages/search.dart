@@ -47,13 +47,17 @@ class _SearchPageState extends State<SearchPage> {
 
             SizedBox(height: 12),
 
-            Expanded(
-              child: ListView.builder(
-                itemCount: searchResult.length,
-                itemBuilder: (context, index) {
-                  return ContentTile(content: searchResult[index]);
-                }
-              )
+            searchResult.isNotEmpty
+            ? Expanded(
+                child: ListView.builder(
+                  itemCount: searchResult.length,
+                  itemBuilder: (context, index) {
+                    return ContentTile(content: searchResult[index]);
+                  }
+                )
+            )
+            : Center(
+              child: Text('No Title / Description found.\n Try using new keywords.')
             ),
           ],
         )
