@@ -3,7 +3,7 @@ import 'package:hive_ce/hive.dart';
 part 'content.g.dart';
 
 @HiveType(typeId: 0)
-class NadagramContent {
+class NadagramContent extends HiveObject {
   @HiveField(0)
   final String title;
 

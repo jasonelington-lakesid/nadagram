@@ -13,7 +13,7 @@ class NadagramContentRepository {
 
     if (content == null) return;
 
-    content.likeCount = likeCount;
+    content.likeCount = likeCount + 1;
 
     await box.put(index, content);
   }

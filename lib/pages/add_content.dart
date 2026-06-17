@@ -11,56 +11,80 @@ class AddContent extends StatelessWidget {
     final titleController = TextEditingController();
     final descController = TextEditingController();
     final imageController = TextEditingController();
+    final formKey = GlobalKey<FormState>();
     return Scaffold(
       body: SafeArea(
         child: Padding(
           padding: .all(20),
-          child: Column(
-            children: [
-              Column(
-                children: [
-                  TextField(
-                    controller: titleController,
-                    decoration: InputDecoration(labelText: 'Title')
-                  ),
-                  TextField(
-                    controller: descController,
-                    decoration: InputDecoration(labelText: 'Caption/Description'),
-                  ),
-                  TextField(
-                    controller: imageController,
-                    decoration: InputDecoration(labelText: 'Image URL'),
-                  )
-                ],
-              ),
-              Center(
-                child: Row(
+          child: 
+            Form (
+              key: formKey,
+              child:
+                Column(
                   children: [
-                    ElevatedButton(
-                      onPressed: () async {
-                        final content = NadagramContent(
-                          title: titleController.text, 
-                          description: descController.text, 
-                          imagePath: imageController.text, 
-                          likeCount: 0
-                        );
+                    Column(
+                      children: [
+                        TextFormField(
+                          controller: titleController,
+                          decoration: InputDecoration(labelText: 'Title'),
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return 'Title can not be empty.';
+                            }
+                            return null;
+                          },
+                        ),
+                        
+                        TextFormField(
+                          controller: descController,
+                          decoration: InputDecoration(labelText: 'Caption/Description'),
+                        ),
 
-                      await repo.addNewContent(content);
-                      if (!context.mounted) return;
-                      Navigator.pop(context);
-                      }, 
-                      child: Text('POST!')
+                        TextFormField(
+                          controller: imageController,
+                          decoration: InputDecoration(labelText: 'Image URL'),
+                          validator: (value)  {
+                            if (value == null || value.trim().isEmpty) {
+                              return 'Image URL can not be empty.';
+                            }
+                            return null;
+                          },
+                        )
+                      ],
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.pop(context);
-                      }, 
-                      child: Text('CANCEL'))
-                  ],
-                ) 
+                    Center(
+                      child: Row(
+                        children: [
+                          ElevatedButton(
+                            onPressed: () async {
+                              if (!formKey.currentState!.validate()) {
+                                return;
+                              }
+                              
+                              final content = NadagramContent(
+                                title: titleController.text, 
+                                description: descController.text, 
+                                imagePath: imageController.text, 
+                                likeCount: 0
+                              );
+
+                            await repo.addNewContent(content);
+                            if (!context.mounted) return;
+                            Navigator.pop(context);
+                            }, 
+                            child: Text('POST!')
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            }, 
+                            child: Text('CANCEL'))
+                        ],
+                      ) 
+                    )
+                  ]
               )
-            ]
-        )
+            )
         )
       )
     );

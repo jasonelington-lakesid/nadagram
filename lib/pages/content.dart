@@ -20,7 +20,7 @@ class NadagramContentView extends StatelessWidget {
         return ListView.builder(
           itemCount: contents.length,
           itemBuilder: (context, index) {
-            return ContentTile(content: contents[index], index: index,);
+            return ContentTile(content: contents[index]);
           },
         );
       }

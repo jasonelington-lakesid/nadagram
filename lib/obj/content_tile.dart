@@ -5,19 +5,17 @@ import 'package:nadagram/db/repositories/user.dart';
 
 class ContentTile extends StatelessWidget{
   final NadagramContent content;
-  final int index;
 
   const ContentTile({
     super.key,
     required this.content,
-    required this.index,
   });
 
   @override
   Widget build(BuildContext context) {
     final NadagramContentRepository nadaRepo = NadagramContentRepository();
     UserRepository repo = UserRepository();
-    final isFavorite = repo.getAllFavorites().contains(index);
+    final isFavorite = repo.getAllFavorites().contains(content.key);
     return Column (
       crossAxisAlignment: .start,
       children: [
@@ -28,7 +26,7 @@ class ContentTile extends StatelessWidget{
             fit: BoxFit.cover,
           )),
         Padding(
-          padding: const EdgeInsets.all(8 ),
+          padding: const EdgeInsets.all(8),
           child: Row(
             children: [
               Text(
@@ -39,16 +37,15 @@ class ContentTile extends StatelessWidget{
               IconButton(
                 onPressed: () async {
                   if (!isFavorite) {
-                    await repo.addNewFavorite(index);
-                    content.likeCount += 1;
-                    nadaRepo.addLikes(index, content.likeCount);
+                    await repo.addNewFavorite(content.key);
+                    await nadaRepo.addLikes(content.key, content.likeCount);
                   }
                 },
                 icon: Icon(
                   Icons.favorite,
                   color: isFavorite
                     ? Colors.red
-                    : null
+                    : Colors.grey,
                 ),
               ),
 
@@ -60,13 +57,14 @@ class ContentTile extends StatelessWidget{
           )
         ),
 
-        Padding(
-          padding: const EdgeInsets.all(8),
-          child: Text(
-            content.description,
-            style: Theme.of(context).textTheme.bodyMedium,
-          )
-        ),
+        content.description.isNotEmpty ?
+          Padding(
+            padding: const EdgeInsets.all(8),
+            child: Text(
+              content.description,
+              style: Theme.of(context).textTheme.bodyMedium,
+            )
+          ) : const SizedBox.shrink(),
 
         Divider()
       ],
