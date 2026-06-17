@@ -14,7 +14,7 @@ class NadagramContent {
   final String imagePath;
 
   @HiveField(3)
-  final int likeCount;
+  int likeCount;
 
   NadagramContent({
     required this.title,

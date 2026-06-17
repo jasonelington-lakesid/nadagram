@@ -2,13 +2,16 @@ import '../models/user.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 
 class UserRepository {
-  Box<User> get _box => Hive.box<User>('User');
+  Box<User> get box => Hive.box<User>('User');
 
-  Future<void> addNewFavorite(User user) async {
-    await _box.add(user);
+  Future<void> addNewFavorite(int contentIndex) async {
+    User user = box.get('currentUser') ??
+      User(favorited: {});
+    user.favorited.add(contentIndex);
+    await box.put('currentUser', user);
   }
 
-  List<User> getAll() {
-    return _box.values.toList();
+  Set<int> getAllFavorites() {
+    return box.get('currentUser')?.favorited ?? {};
   }
 }

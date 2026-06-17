@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_ce_flutter.dart';
 import 'package:nadagram/db/repositories/content.dart';
+import 'package:nadagram/db/repositories/user.dart';
 import 'package:nadagram/obj/content_tile.dart';
 
 class NadagramContentView extends StatelessWidget {
@@ -10,15 +11,16 @@ class NadagramContentView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final NadagramContentRepository repo = NadagramContentRepository();
+    final NadagramContentRepository nadaRepo = NadagramContentRepository();
+    final UserRepository useRepo = UserRepository();
     return ValueListenableBuilder(
-      valueListenable: repo.box.listenable(),
+      valueListenable: useRepo.box.listenable(),
       builder: (context, box, _) {
-        final contents = box.values.toList();
+        final contents = nadaRepo.getAll().reversed.toList();
         return ListView.builder(
           itemCount: contents.length,
           itemBuilder: (context, index) {
-            return ContentTile(content: contents[index]);
+            return ContentTile(content: contents[index], index: index,);
           },
         );
       }

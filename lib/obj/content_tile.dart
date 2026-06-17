@@ -1,16 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:nadagram/db/models/content.dart';
+import 'package:nadagram/db/repositories/content.dart';
+import 'package:nadagram/db/repositories/user.dart';
 
 class ContentTile extends StatelessWidget{
   final NadagramContent content;
+  final int index;
 
   const ContentTile({
     super.key,
     required this.content,
+    required this.index,
   });
 
   @override
   Widget build(BuildContext context) {
+    final NadagramContentRepository nadaRepo = NadagramContentRepository();
+    UserRepository repo = UserRepository();
+    final isFavorite = repo.getAllFavorites().contains(index);
     return Column (
       crossAxisAlignment: .start,
       children: [
@@ -28,10 +35,23 @@ class ContentTile extends StatelessWidget{
                 content.title,
                 style: Theme.of(context).textTheme.titleMedium,
               ),
+              
               IconButton(
-                onPressed: () {},
-                icon: Icon(Icons.favorite),
+                onPressed: () async {
+                  if (!isFavorite) {
+                    await repo.addNewFavorite(index);
+                    content.likeCount += 1;
+                    nadaRepo.addLikes(index, content.likeCount);
+                  }
+                },
+                icon: Icon(
+                  Icons.favorite,
+                  color: isFavorite
+                    ? Colors.red
+                    : null
+                ),
               ),
+
               Text(
                 content.likeCount.toString(),
                 style: Theme.of(context).textTheme.bodyMedium

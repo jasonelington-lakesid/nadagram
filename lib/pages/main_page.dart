@@ -22,13 +22,15 @@ class _MainLayoutPageState extends State<MainLayout> {
         ),
         actions: [
           IconButton(
-            onPressed: () {
-              Navigator.push(
+            onPressed: () async {
+              await Navigator.push(
                 context,
                 MaterialPageRoute(
                   builder: (context) => const AddContent()
                 )
-              );
+              ); 
+
+              setState(() {});
             },
             icon: Icon(Icons.add)
           ),
