@@ -5,7 +5,7 @@ part 'user.g.dart';
 @HiveType(typeId: 1)
 class User {
   @HiveField(0)
-  final List<String> favorited;
+  final Set<int> favorited;
 
   User({required this.favorited});
 }

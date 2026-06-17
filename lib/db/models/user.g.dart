@@ -16,7 +16,7 @@ class UserAdapter extends TypeAdapter<User> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return User(favorited: (fields[0] as List).cast<String>());
+    return User(favorited: (fields[0] as Set).cast<int>());
   }
 
   @override
