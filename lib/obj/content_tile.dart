@@ -63,7 +63,12 @@ class _ContentTileState extends State<ContentTile> with AutomaticKeepAliveClient
                 )
               );
             },
-          )),
+            errorBuilder: (context, error, stackTrace) {
+              return Icon(Icons.broken_image);
+            },
+          )
+        ),
+
         Padding(
           padding: const EdgeInsets.all(8),
           child: Row(
