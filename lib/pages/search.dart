@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:hive_ce_flutter/hive_flutter.dart';
 import 'package:nadagram/db/models/content.dart';
@@ -13,6 +14,7 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  Timer? _debounce;
   String keyword = '';
   NadagramContentRepository contentRepo = NadagramContentRepository();
   UserRepository userRepo = UserRepository();
@@ -42,9 +44,16 @@ class _SearchPageState extends State<SearchPage> {
                 )
               ),
               onChanged: (value) {
-                setState(() {
-                  keyword = value;
-                });
+                _debounce?.cancel();
+
+                _debounce = Timer(
+                  Duration(milliseconds: 300),
+                  () {
+                    setState(() {
+                      keyword = value;
+                    });
+                  }
+                );
               },
             ),
 
