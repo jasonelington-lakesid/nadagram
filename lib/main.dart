@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nadagram/db/db_service.dart';
 import 'package:nadagram/pages/main_page.dart';
+import 'package:nadagram/theme/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,30 +24,35 @@ class MainApp extends StatelessWidget {
       seedColor: Colors.blue,
       brightness: Brightness.dark
     );
-    return MaterialApp(
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: lightScheme,
-        appBarTheme: AppBarTheme(
-          backgroundColor: lightScheme.surface,
-          foregroundColor: lightScheme.onSurface,
-          scrolledUnderElevation: 0,
-          surfaceTintColor: Colors.transparent,
-        )
-      ),
-      darkTheme: ThemeData(
-        useMaterial3: true,
-        colorScheme: darkScheme,
-        appBarTheme: AppBarTheme(
-          backgroundColor: darkScheme.surface,
-          foregroundColor: darkScheme.onSurface,
-          scrolledUnderElevation: 0,
-          surfaceTintColor: Colors.transparent,
-        )
-      ),
-      themeMode: ThemeMode.dark,
-      debugShowCheckedModeBanner: false,
-      home: const MainLayout()
+    return ValueListenableBuilder(
+        valueListenable: themeModeNotifier, 
+        builder: (context, themeMode, _) {
+          return MaterialApp(
+            theme: ThemeData(
+              useMaterial3: true,
+              colorScheme: lightScheme,
+              appBarTheme: AppBarTheme(
+                backgroundColor: lightScheme.surface,
+                foregroundColor: lightScheme.onSurface,
+                scrolledUnderElevation: 0,
+                surfaceTintColor: Colors.transparent,
+              )
+            ),
+            darkTheme: ThemeData(
+              useMaterial3: true,
+              colorScheme: darkScheme,
+              appBarTheme: AppBarTheme(
+                backgroundColor: darkScheme.surface,
+                foregroundColor: darkScheme.onSurface,
+                scrolledUnderElevation: 0,
+                surfaceTintColor: Colors.transparent,
+              )
+            ),
+            themeMode: themeMode,
+            debugShowCheckedModeBanner: false,
+            home: const MainLayout()
+          );
+        }
     );
   }
 }

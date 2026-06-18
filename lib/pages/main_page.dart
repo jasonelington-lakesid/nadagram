@@ -4,6 +4,7 @@ import 'package:nadagram/db/repositories/content.dart';
 import 'package:nadagram/pages/add_content.dart';
 import 'package:nadagram/pages/content.dart';
 import 'package:nadagram/pages/search.dart';
+import 'package:nadagram/theme/theme.dart';
 
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key,});
@@ -28,6 +29,17 @@ class _MainLayoutPageState extends State<MainLayout> {
         ),
         actions: [
           IconButton(
+            icon: themeModeNotifier.value == ThemeMode.dark
+                      ? Icon(Icons.dark_mode)
+                      : Icon(Icons.light_mode),
+            onPressed: () {
+              themeModeNotifier.value = themeModeNotifier.value == ThemeMode.dark
+                      ? ThemeMode.light
+                      : ThemeMode.dark;
+            },
+          ),
+
+          IconButton(
             onPressed: () {
               Navigator.push(
                 context,
@@ -38,6 +50,7 @@ class _MainLayoutPageState extends State<MainLayout> {
             },
             icon: Icon(Icons.search)
           ),
+
           IconButton(
             onPressed: () async {
               await Navigator.push(
