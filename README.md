@@ -16,5 +16,7 @@ A Flutter Project that imitates Instagram.
 - Only one user
 - Title length is limited
 - No one can comment
-- Can't spam the favorite/liked icon
+- Can not share the post
+- No dislikes
+- Can not edit post
 - Image requires internet connection
