@@ -30,6 +30,7 @@ class AddContent extends StatelessWidget {
                     Column(
                       children: [
                         TextFormField(
+                          maxLength: 26,
                           controller: titleController,
                           decoration: InputDecoration(labelText: 'Title'),
                           validator: (value) {
