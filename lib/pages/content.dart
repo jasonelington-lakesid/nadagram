@@ -26,7 +26,7 @@ class NadagramContentView extends StatelessWidget {
           );
         } else {
           return Center(
-            child: Text('No Content Available. . .}')
+            child: Text('No Content Available. . .')
           );
         }     
       }
