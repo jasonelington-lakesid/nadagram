@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:nadagram/db/db_service.dart';
+import 'package:nadagram/db/repositories/user.dart';
 import 'package:nadagram/pages/main_page.dart';
 import 'package:nadagram/theme/theme.dart';
 
@@ -16,6 +17,7 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final UserRepository userRepo = UserRepository();
     final lightScheme = ColorScheme.fromSeed(
       seedColor: Colors.blue,
       brightness: Brightness.light
@@ -24,6 +26,10 @@ class MainApp extends StatelessWidget {
       seedColor: Colors.blue,
       brightness: Brightness.dark
     );
+    bool darkMode = userRepo.getDarkMode();
+    if (darkMode) {
+      themeModeNotifier.value = ThemeMode.dark;
+    }
     return ValueListenableBuilder(
         valueListenable: themeModeNotifier, 
         builder: (context, themeMode, _) {

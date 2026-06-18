@@ -6,6 +6,14 @@ part 'user.g.dart';
 class User extends HiveObject{
   @HiveField(0)
   final Set<int> favorited;
+  
+  @HiveField(1)
+  bool isDarkMode = false;
 
-  User({required this.favorited});
+  User(
+    {
+      required this.favorited,
+      required this.isDarkMode,
+    }
+  );
 }

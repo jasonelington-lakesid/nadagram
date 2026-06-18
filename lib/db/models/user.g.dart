@@ -16,15 +16,20 @@ class UserAdapter extends TypeAdapter<User> {
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return User(favorited: (fields[0] as Set).cast<int>());
+    return User(
+      favorited: (fields[0] as Set).cast<int>(),
+      isDarkMode: fields[1] as bool,
+    );
   }
 
   @override
   void write(BinaryWriter writer, User obj) {
     writer
-      ..writeByte(1)
+      ..writeByte(2)
       ..writeByte(0)
-      ..write(obj.favorited);
+      ..write(obj.favorited)
+      ..writeByte(1)
+      ..write(obj.isDarkMode);
   }
 
   @override
