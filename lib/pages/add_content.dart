@@ -13,6 +13,9 @@ class AddContent extends StatelessWidget {
     final imageController = TextEditingController();
     final formKey = GlobalKey<FormState>();
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Adding new Content'),
+      ),
       body: SafeArea(
         child: Padding(
           padding: .all(20),
