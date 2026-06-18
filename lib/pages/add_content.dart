@@ -39,7 +39,11 @@ class AddContent extends StatelessWidget {
                           minLines: 4,
                           maxLines: 4,
                           controller: descController,
-                          decoration: InputDecoration(labelText: 'Caption/Description'),
+                          textAlignVertical: .top,
+                          decoration: InputDecoration(
+                            labelText: 'Caption/Description',
+                            alignLabelWithHint: true,
+                          ),
                         ),
 
                         TextFormField(
