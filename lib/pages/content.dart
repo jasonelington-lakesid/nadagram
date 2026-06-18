@@ -26,7 +26,7 @@ class NadagramContentView extends StatelessWidget {
           );
         } else {
           return Center(
-            child: Text('No Content Available.\nFeel free to add new content using ${Icon(Icons.add)}')
+            child: Text('No Content Available. . .}')
           );
         }     
       }
