@@ -1,6 +1,6 @@
 # nadagram
 
-A Flutter Project for Learning ListView (specfically?)
+A Flutter Project that imitates Instagram.
 
 ## TechStack:
 - Flutter: 3.44.1
@@ -11,3 +11,10 @@ A Flutter Project for Learning ListView (specfically?)
 - Google_Fonts: 6.3.0
 - build_runner: 2.4.15
 - hive_ce_generator: 1.9.0
+
+## Limitations:
+- Only one user
+- Title length is limited
+- No one can comment
+- Can't spam the favorite/liked icon
+- Image requires internet connection
