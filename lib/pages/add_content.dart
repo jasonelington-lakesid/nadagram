@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:nadagram/db/models/content.dart';
 import 'package:nadagram/db/repositories/content.dart';
+import 'package:nadagram/external_state/accessible.dart';
 
 class AddContent extends StatelessWidget {
   const AddContent({super.key});
@@ -49,15 +50,17 @@ class AddContent extends StatelessWidget {
                           ),
                         ),
 
-                        TextFormField(
-                          controller: imageController,
-                          decoration: InputDecoration(labelText: 'Image URL'),
-                          validator: (value)  {
-                            if (value == null || value.trim().isEmpty) {
-                              return 'Image URL can not be empty.';
-                            }
-                            return null;
-                          },
+                        ValueListenableBuilder(
+                          valueListenable: accessibleNotifier, 
+                          builder: (context, error, _) {
+                            return TextFormField(
+                              controller: imageController,
+                              onChanged: (_) {
+                                accessibleNotifier.value = null;
+                              },
+                              decoration: InputDecoration(labelText: 'Image URL', errorText: error),
+                            );
+                          }
                         )
                       ],
                     ),
@@ -69,6 +72,14 @@ class AddContent extends StatelessWidget {
                               if (!formKey.currentState!.validate()) {
                                 return;
                               }
+
+                              final isAccessilbe = await contentRepo.validateImageAccessible(imageController.text);
+                              if (!isAccessilbe) {
+                                accessibleNotifier.value = 'Image URL is not valid or accessible.';
+                                return;
+                              }
+
+                              accessibleNotifier.value = null;
                               
                               final content = NadagramContent(
                                 title: titleController.text, 

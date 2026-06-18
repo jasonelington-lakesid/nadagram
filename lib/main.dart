@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:nadagram/db/db_service.dart';
 import 'package:nadagram/db/repositories/user.dart';
 import 'package:nadagram/pages/main_page.dart';
-import 'package:nadagram/theme/theme.dart';
+import 'package:nadagram/external_state/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

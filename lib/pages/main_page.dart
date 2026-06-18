@@ -5,7 +5,7 @@ import 'package:nadagram/db/repositories/user.dart';
 import 'package:nadagram/pages/add_content.dart';
 import 'package:nadagram/pages/content.dart';
 import 'package:nadagram/pages/search.dart';
-import 'package:nadagram/theme/theme.dart';
+import 'package:nadagram/external_state/theme.dart';
 
 class MainLayout extends StatefulWidget {
   const MainLayout({super.key,});
