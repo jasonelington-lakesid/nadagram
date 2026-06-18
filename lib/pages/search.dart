@@ -74,7 +74,7 @@ class _SearchPageState extends State<SearchPage> {
                 )
             )
             : Center(
-              child: Text('No Title / Description found.\n Try using new keywords.')
+              child: Text('No Title / Description found.\nTry using new keywords.')
             ),
           ],
         )
