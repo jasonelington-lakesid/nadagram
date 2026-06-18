@@ -75,7 +75,7 @@ class _ContentTileState extends State<ContentTile> with AutomaticKeepAliveClient
             children: [
               Text(
                 widget.content.title,
-                style: Theme.of(context).textTheme.titleMedium,
+                style: Theme.of(context).textTheme.titleLarge,
               ),
               
               AnimatedScale(
@@ -116,7 +116,7 @@ class _ContentTileState extends State<ContentTile> with AutomaticKeepAliveClient
               padding: const EdgeInsets.all(8),
               child: Text(
                 widget.content.description,
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: Theme.of(context).textTheme.bodyLarge,
                 maxLines: descExpanded ? null : 2,
                 overflow: descExpanded
                             ? TextOverflow.visible
