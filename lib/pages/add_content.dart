@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:nadagram/db/models/content.dart';
 import 'package:nadagram/db/repositories/content.dart';
 import 'package:nadagram/external_state/accessible.dart';
+import 'package:nadagram/external_state/post.dart';
 
 class AddContent extends StatelessWidget {
   const AddContent({super.key});
@@ -66,37 +67,45 @@ class AddContent extends StatelessWidget {
                     ),
                     SizedBox(height: 12),
                     Center(
-                      child: Row(
-                        children: [
-                          ElevatedButton(
-                            onPressed: () async {
-                              if (!formKey.currentState!.validate()) {
-                                return;
-                              }
+                      child: ValueListenableBuilder(
+                        valueListenable: postNotifier, 
+                        child: Text('Uploading . . .'),
+                        builder: (context, isPressed, _) {
+                          return ElevatedButton(
+                            onPressed: isPressed? null : 
+                                () async {
+                                  postNotifier.value = true;
+                                  if (!formKey.currentState!.validate()) {
+                                    return;
+                                  }
 
-                              final isAccessilbe = await contentRepo.validateImageAccessible(imageController.text);
-                              if (!isAccessilbe) {
-                                accessibleNotifier.value = 'Image URL is not valid or accessible.';
-                                return;
-                              }
+                                  final isAccessilbe = await contentRepo.validateImageAccessible(imageController.text);
+                                  if (!isAccessilbe) {
+                                    accessibleNotifier.value = 'Image URL is not valid or accessible.';
+                                    return;
+                                  }
 
-                              accessibleNotifier.value = null;
-                              
-                              final content = NadagramContent(
-                                title: titleController.text, 
-                                description: descController.text, 
-                                imagePath: imageController.text, 
-                                likeCount: 0
-                              );
-
-                              await contentRepo.addNewContent(content);
-                              if (!context.mounted) return;
-                              Navigator.pop(context);
-                            }, 
-                            child: Text('POST!')
-                          ),
-                        ],
-                      ) 
+                                  accessibleNotifier.value = null;
+                                  
+                                  final content = NadagramContent(
+                                    title: titleController.text, 
+                                    description: descController.text, 
+                                    imagePath: imageController.text, 
+                                    likeCount: 0
+                                  );
+                                  try {
+                                    await contentRepo.addNewContent(content);
+                                  } finally {
+                                    postNotifier.value = false;
+                                  }
+                                  
+                                  if (!context.mounted) return;
+                                  Navigator.pop(context);
+                                }, 
+                            child: isPressed ? const CircularProgressIndicator() : Text('POST')
+                          );
+                        }
+                      )
                     )
                   ]
               )
