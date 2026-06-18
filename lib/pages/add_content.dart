@@ -64,6 +64,7 @@ class AddContent extends StatelessWidget {
                         )
                       ],
                     ),
+                    SizedBox(height: 12),
                     Center(
                       child: Row(
                         children: [
@@ -88,17 +89,12 @@ class AddContent extends StatelessWidget {
                                 likeCount: 0
                               );
 
-                            await contentRepo.addNewContent(content);
-                            if (!context.mounted) return;
-                            Navigator.pop(context);
+                              await contentRepo.addNewContent(content);
+                              if (!context.mounted) return;
+                              Navigator.pop(context);
                             }, 
                             child: Text('POST!')
                           ),
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                            }, 
-                            child: Text('CANCEL'))
                         ],
                       ) 
                     )
