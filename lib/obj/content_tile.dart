@@ -64,7 +64,16 @@ class _ContentTileState extends State<ContentTile> with AutomaticKeepAliveClient
               );
             },
             errorBuilder: (context, error, stackTrace) {
-              return Icon(Icons.broken_image);
+              return Column(
+                mainAxisAlignment: .center,
+                children: [
+                  Icon(Icons.broken_image),
+                  Text(
+                    'Image could not be loaded. . .',
+                    style: Theme.of(context).textTheme.bodyMedium,
+                  )
+                ],
+              );
             },
           )
         ),
