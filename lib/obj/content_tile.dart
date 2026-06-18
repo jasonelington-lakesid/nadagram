@@ -15,7 +15,7 @@ class ContentTile extends StatefulWidget{
   State<ContentTile> createState() => _ContentTileState();
 }
 
-class _ContentTileState extends State<ContentTile> {
+class _ContentTileState extends State<ContentTile> with AutomaticKeepAliveClientMixin {
   bool descExpanded = false;
   bool isAnimate = false;
 
@@ -34,7 +34,11 @@ class _ContentTileState extends State<ContentTile> {
   }
 
   @override
+  bool get wantKeepAlive => true;
+
+  @override
   Widget build(BuildContext context) {
+    super.build(context);
     final NadagramContentRepository contentRepo = NadagramContentRepository();
     UserRepository userRepo = UserRepository();
     final isFavorite = userRepo.getAllFavorites().contains(widget.content.key);
