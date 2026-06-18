@@ -34,6 +34,7 @@ class AddContent extends StatelessWidget {
                           controller: titleController,
                           decoration: InputDecoration(labelText: 'Title'),
                           validator: (value) {
+                            postNotifier.value = false;
                             if (value == null || value.trim().isEmpty) {
                               return 'Title can not be empty.';
                             }
@@ -55,6 +56,7 @@ class AddContent extends StatelessWidget {
                         ValueListenableBuilder(
                           valueListenable: accessibleNotifier, 
                           builder: (context, error, _) {
+                            postNotifier.value = false;
                             return TextFormField(
                               controller: imageController,
                               onChanged: (_) {
