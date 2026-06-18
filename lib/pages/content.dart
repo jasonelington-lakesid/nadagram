@@ -17,12 +17,18 @@ class NadagramContentView extends StatelessWidget {
       valueListenable: useRepo.box.listenable(),
       builder: (context, box, _) {
         final contents = contentRepo.getAll().reversed.toList();
-        return ListView.builder(
-          itemCount: contents.length,
-          itemBuilder: (context, index) {
-            return ContentTile(content: contents[index]);
-          },
-        );
+        if (contents.isNotEmpty) {
+          return ListView.builder(
+            itemCount: contents.length,
+            itemBuilder: (context, index) {
+              return ContentTile(content: contents[index]);
+            },
+          );
+        } else {
+          return Center(
+            child: Text('No Content Available.\nFeel free to add new content using ${Icon(Icons.add)}')
+          );
+        }     
       }
     );
     
