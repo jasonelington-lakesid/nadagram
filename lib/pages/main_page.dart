@@ -7,7 +7,6 @@ import 'package:nadagram/db/repositories/content.dart';
 import 'package:nadagram/db/repositories/user.dart';
 import 'package:nadagram/obj/content_tile.dart';
 import 'package:nadagram/pages/add_content.dart';
-import 'package:nadagram/pages/content.dart';
 import 'package:nadagram/external_state/theme.dart';
 
 class MainLayout extends StatefulWidget {
@@ -126,7 +125,9 @@ class _MainLayoutPageState extends State<MainLayout> {
                       );
                     }
                   ) 
-                  : NadagramContentView()
+                  : Center(
+                    child: Text('No Content Available. . .')
+                  )
               )
           )
         );

@@ -14,7 +14,6 @@ class AddContent extends StatelessWidget {
     final descController = TextEditingController();
     final imageController = TextEditingController();
     final formKey = GlobalKey<FormState>();
-    bool isValid = false;
     return ColoredBox(
       color: Theme.of(context).scaffoldBackgroundColor,
       child: Center(
@@ -44,7 +43,7 @@ class AddContent extends StatelessWidget {
                                   controller: titleController,
                                   decoration: InputDecoration(labelText: 'Title'),
                                   validator: (value) {
-                                    postNotifier.value = false;
+                                    postNotifier.value = postNotifier.value.copyWith(isPost: false);
                                     if (value == null || value.trim().isEmpty) {
                                       return 'Title can not be empty.';
                                     }
@@ -66,7 +65,7 @@ class AddContent extends StatelessWidget {
                                 ValueListenableBuilder(
                                   valueListenable: accessibleNotifier, 
                                   builder: (context, error, _) {
-                                    postNotifier.value = false;
+                                    postNotifier.value = postNotifier.value.copyWith(isPost: false);
                                     return TextFormField(
                                       controller: imageController,
                                       onChanged: (_) {
@@ -80,30 +79,33 @@ class AddContent extends StatelessWidget {
                             ),
                             SizedBox(height: 12),
                             Center(
-                              child: ValueListenableBuilder(
+                              child: ValueListenableBuilder<AddContentNotifier>(
                                 valueListenable: postNotifier, 
                                 child: Text('Uploading . . .'),
-                                builder: (context, isPressed, _) {
+                                builder: (context, state, _) {
                                   return ElevatedButton(
-                                    onPressed: isPressed? null : 
+                                    onPressed: state.isPost? null : 
                                         () async {
-                                          postNotifier.value = true;
+                                          postNotifier.value = postNotifier.value.copyWith(isPost: true);
                                           if (!formKey.currentState!.validate()) {
+                                            postNotifier.value = postNotifier.value.copyWith(isPost: false, isValid: false);
                                             return;
                                           }
 
                                           if (imageController.text.isEmpty) {
+                                            postNotifier.value = postNotifier.value.copyWith(isPost: false, isValid: false);
                                             accessibleNotifier.value = 'Image URL can not be empty';
                                             return;
                                           }
 
                                           final isAccessilbe = await contentRepo.validateImageAccessible(imageController.text);
                                           if (!isAccessilbe) {
+                                            postNotifier.value = postNotifier.value.copyWith(isPost: false, isValid: false);
                                             accessibleNotifier.value = 'Image URL is not valid or accessible.';
                                             return;
                                           }
 
-                                          accessibleNotifier.value = null;
+                                          postNotifier.value = postNotifier.value.copyWith(isPost: true);
                                           
                                           final content = NadagramContent(
                                             title: titleController.text, 
@@ -112,17 +114,19 @@ class AddContent extends StatelessWidget {
                                             likeCount: 0
                                           );
                                           try {
-                                            isValid = false;
                                             await contentRepo.addNewContent(content);
                                           } finally {
-                                            postNotifier.value = false;
-                                            isValid = true;
+                                            postNotifier.value = postNotifier.value.copyWith(
+                                              isPost: false, isValid: true
+                                            );
                                           }
                                           
                                           if (!context.mounted) return;
                                           Navigator.pop(context);
                                         }, 
-                                    child: isValid ? const CircularProgressIndicator() : Text('POST')
+                                    child: postNotifier.value.isValid 
+                                          ? const CircularProgressIndicator()
+                                          : Text('POST')
                                   );
                                 }
                               )
