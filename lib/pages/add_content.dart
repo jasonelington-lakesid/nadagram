@@ -92,10 +92,10 @@ class AddContent extends StatelessWidget {
                                           }
 
                                           if (imageController.text.isEmpty) {
-                                            accessibleNotifier.value = 'Image URL Empty';
+                                            accessibleNotifier.value = 'Image URL can not be empty';
                                             return;
                                           }
-                                          
+
                                           final isAccessilbe = await contentRepo.validateImageAccessible(imageController.text);
                                           if (!isAccessilbe) {
                                             accessibleNotifier.value = 'Image URL is not valid or accessible.';
