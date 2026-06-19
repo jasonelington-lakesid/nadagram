@@ -14,6 +14,7 @@ class AddContent extends StatelessWidget {
     final descController = TextEditingController();
     final imageController = TextEditingController();
     final formKey = GlobalKey<FormState>();
+    bool isValid = false;
     return ColoredBox(
       color: Theme.of(context).scaffoldBackgroundColor,
       child: Center(
@@ -90,6 +91,11 @@ class AddContent extends StatelessWidget {
                                             return;
                                           }
 
+                                          if (imageController.text.isEmpty) {
+                                            accessibleNotifier.value = 'Image URL Empty';
+                                            return;
+                                          }
+                                          
                                           final isAccessilbe = await contentRepo.validateImageAccessible(imageController.text);
                                           if (!isAccessilbe) {
                                             accessibleNotifier.value = 'Image URL is not valid or accessible.';
@@ -105,15 +111,17 @@ class AddContent extends StatelessWidget {
                                             likeCount: 0
                                           );
                                           try {
+                                            isValid = false;
                                             await contentRepo.addNewContent(content);
                                           } finally {
                                             postNotifier.value = false;
+                                            isValid = true;
                                           }
                                           
                                           if (!context.mounted) return;
                                           Navigator.pop(context);
                                         }, 
-                                    child: isPressed ? const CircularProgressIndicator() : Text('POST')
+                                    child: isValid ? const CircularProgressIndicator() : Text('POST')
                                   );
                                 }
                               )
