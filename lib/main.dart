@@ -18,6 +18,14 @@ class MainApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final UserRepository userRepo = UserRepository();
+    final lightScheme = ColorScheme.fromSeed(
+      seedColor: Colors.blue,
+      brightness: Brightness.light
+    );
+    final darkScheme = ColorScheme.fromSeed(
+      seedColor: Colors.blue,
+      brightness: Brightness.dark
+    );
     bool darkMode = userRepo.getDarkMode();
     if (darkMode) {
       themeModeNotifier.value = ThemeMode.dark;
@@ -26,6 +34,26 @@ class MainApp extends StatelessWidget {
         valueListenable: themeModeNotifier, 
         builder: (context, themeMode, _) {
           return MaterialApp(
+            theme: ThemeData(
+              useMaterial3: true,
+              colorScheme: lightScheme,
+              appBarTheme: AppBarTheme(
+                backgroundColor: lightScheme.surface,
+                foregroundColor: lightScheme.onSurface,
+                scrolledUnderElevation: 0,
+                surfaceTintColor: Colors.transparent,
+              )
+            ),
+            darkTheme: ThemeData(
+              useMaterial3: true,
+              colorScheme: darkScheme,
+              appBarTheme: AppBarTheme(
+                backgroundColor: darkScheme.surface,
+                foregroundColor: darkScheme.onSurface,
+                scrolledUnderElevation: 0,
+                surfaceTintColor: Colors.transparent,
+              )
+            ),
             themeMode: themeMode,
             debugShowCheckedModeBanner: false,
             home: Builder(
