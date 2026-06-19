@@ -12,7 +12,10 @@ class NadagramContentRepository {
   Future<bool> validateImageAccessible(String url) async {
     try {
       final response = await http.get(Uri.parse(url));
-      return response.statusCode == 200;
+      final contentType = response.headers['content-type'];
+      return response.statusCode == 200 &&
+            contentType != null &&
+            contentType.startsWith('image/');
     } catch (_) {
       return false;
     }
