@@ -56,7 +56,27 @@ class MainApp extends StatelessWidget {
             ),
             themeMode: themeMode,
             debugShowCheckedModeBanner: false,
-            home: const MainLayout()
+            home: Builder(
+              builder: (context) { 
+                return ColoredBox(
+                  color: Theme.of(context).scaffoldBackgroundColor,
+                  child: Center(
+                    child: Container(
+                      constraints: const BoxConstraints(maxWidth: 800),
+                      decoration: BoxDecoration(
+                        border: .symmetric(
+                          vertical: BorderSide(
+                            color: Theme.of(context).dividerColor,
+                            width: 1,
+                          )
+                        )
+                      ),
+                      child: const MainLayout(),
+                    )
+                  )
+                );
+              }
+            )
           );
         }
     );
