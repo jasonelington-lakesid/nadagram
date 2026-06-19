@@ -11,6 +11,7 @@ A Flutter Project that imitates Instagram.
 - Google_Fonts: 6.3.0
 - build_runner: 2.4.15
 - hive_ce_generator: 1.9.0
+- http: 1.5.0
 
 ## Limitations:
 - Only one user
