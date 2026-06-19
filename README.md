@@ -21,3 +21,4 @@ A Flutter Project that imitates Instagram.
 - No dislikes
 - Can not edit post
 - Image requires internet connection
+- Handler for POST button is not built properly
