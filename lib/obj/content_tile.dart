@@ -82,9 +82,13 @@ class _ContentTileState extends State<ContentTile> with AutomaticKeepAliveClient
           padding: const EdgeInsets.all(8),
           child: Row(
             children: [
-              Text(
-                widget.content.title,
-                style: Theme.of(context).textTheme.titleLarge,
+              Expanded(
+                child: Text(
+                  widget.content.title,
+                  style: Theme.of(context).textTheme.titleLarge,
+                  maxLines: 1,
+                  overflow: .ellipsis,
+                )
               ),
               
               AnimatedScale(
@@ -128,8 +132,8 @@ class _ContentTileState extends State<ContentTile> with AutomaticKeepAliveClient
                 style: Theme.of(context).textTheme.bodyLarge,
                 maxLines: descExpanded ? null : 2,
                 overflow: descExpanded
-                            ? TextOverflow.visible
-                            : TextOverflow.ellipsis
+                            ? .visible
+                            : .ellipsis
               )
             ) : const SizedBox.shrink(),
             

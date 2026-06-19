@@ -28,7 +28,8 @@ class AddContent extends StatelessWidget {
               ),
             ),
             body: SafeArea(
-              child: Center(
+              child: SingleChildScrollView(
+                child: Center(
                   child: Padding(
                     padding: .all(20),
                     child: Form (
@@ -132,6 +133,7 @@ class AddContent extends StatelessWidget {
                   )
                 )
               )
+            )
           )
         )
       )

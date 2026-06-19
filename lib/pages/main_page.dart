@@ -25,103 +25,112 @@ class _MainLayoutPageState extends State<MainLayout> {
   @override
   Widget build(BuildContext context) {
     List<NadagramContent> searchResult = contentRepo.getContents(keyword).reversed.toList();
-    return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 100,
-        title: Row (
-          children: [
-            Text(
-              'Nadagram',
-              style: GoogleFonts.poppins(
-                fontWeight: .bold,
-                fontSize: 18,
-              )
-            ),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final isSmall = constraints.maxWidth < 500;
+        final isSuperSmall = constraints.maxWidth < 200;
+        return Scaffold(
+          appBar: AppBar(
+            toolbarHeight: 100,
+            title: Row (
+              children: [
+                if (!isSmall)
+                Text(
+                  'Nadagram',
+                  style: GoogleFonts.poppins(
+                    fontWeight: .bold,
+                    fontSize: 18,
+                  )
+                ),
 
-            SizedBox(width: 8),
+                if (!isSmall)
+                SizedBox(width: 8),
 
-            Expanded(
-              child: SizedBox(
-                child: TextField(
-                  decoration: InputDecoration(
-                    hintText: 'Search Post',
-                    prefixIcon: Icon(Icons.search),
-                    border: OutlineInputBorder(
-                      borderRadius: .circular(12)
-                    )
+                Expanded(
+                  child: SizedBox(
+                    child: TextField(
+                      decoration: InputDecoration(
+                        hintText: 'Search Post',
+                        prefixIcon: Icon(Icons.search),
+                        border: OutlineInputBorder(
+                          borderRadius: .circular(12)
+                        )
+                      ),
+                      onChanged: (value) {
+                        _debounce?.cancel();
+
+                        _debounce = Timer(
+                          Duration(milliseconds: 300),
+                          () {
+                            setState(() {
+                              keyword = value;
+                            });
+                          }
+                        );
+                      },
+                    ),
+                  )
+                ),
+                
+                if (!isSuperSmall)
+                IconButton(
+                  icon: Icon(
+                    userRepo.getDarkMode()
+                        ? Icons.light_mode
+                        : Icons.dark_mode
                   ),
-                  onChanged: (value) {
-                    _debounce?.cancel();
-
-                    _debounce = Timer(
-                      Duration(milliseconds: 300),
-                      () {
-                        setState(() {
-                          keyword = value;
-                        });
-                      }
-                    );
+                  onPressed: () async {
+                    final isDark = themeModeNotifier.value != ThemeMode.dark;
+                    themeModeNotifier.value = isDark
+                        ? ThemeMode.dark
+                        : ThemeMode.light;
+                    userRepo.setDarkMode(isDark);
+                    setState(() {});
                   },
                 ),
-              )
+
+                IconButton(
+                  onPressed: () async {
+                    await Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AddContent()
+                      )
+                    ); 
+
+                    setState(() {});
+                  },
+                  icon: Icon(Icons.add)
+                ),
+              ],
             ),
-
-            IconButton(
-              icon: Icon(
-                userRepo.getDarkMode()
-                    ? Icons.light_mode
-                    : Icons.dark_mode
-              ),
-              onPressed: () async {
-                final isDark = themeModeNotifier.value != ThemeMode.dark;
-                themeModeNotifier.value = isDark
-                    ? ThemeMode.dark
-                    : ThemeMode.light;
-                userRepo.setDarkMode(isDark);
-                setState(() {});
-              },
-            ),
-
-            IconButton(
-              onPressed: () async {
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const AddContent()
-                  )
-                ); 
-
-                setState(() {});
-              },
-              icon: Icon(Icons.add)
-            ),
-          ],
-        ),
-      ),
-
-      body: SafeArea(
-        child: Padding(
-          padding: EdgeInsets.only(
-            left: 8,
-            right: 8,
           ),
-          child: 
-            searchResult.isNotEmpty
-              ? ValueListenableBuilder(
-                valueListenable: userRepo.box.listenable(), 
-                builder: (context, box, _) {
-                  return ListView.builder(
-                    itemCount: searchResult.length,
-                    itemBuilder: (context, index) {
-                      print('Object Contet Created: $index');
-                      return ContentTile(content: searchResult[index]);
+
+          body: SafeArea(
+            child: Padding(
+              padding: EdgeInsets.only(
+                left: 8,
+                right: 8,
+              ),
+              child: 
+                searchResult.isNotEmpty
+                  ? ValueListenableBuilder(
+                    valueListenable: userRepo.box.listenable(), 
+                    builder: (context, box, _) {
+                      return ListView.builder(
+                        itemCount: searchResult.length,
+                        itemBuilder: (context, index) {
+                          print('Object Contet Created: $index');
+                          return ContentTile(content: searchResult[index]);
+                        }
+                      );
                     }
-                  );
-                }
-              ) 
-              : NadagramContentView()
+                  ) 
+                  : NadagramContentView()
+              )
           )
-      )
+        );
+      }
     );
   }
 }
