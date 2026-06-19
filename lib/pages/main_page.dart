@@ -113,6 +113,7 @@ class _MainLayoutPageState extends State<MainLayout> {
                   return ListView.builder(
                     itemCount: searchResult.length,
                     itemBuilder: (context, index) {
+                      print('Object Contet Created: $index');
                       return ContentTile(content: searchResult[index]);
                     }
                   );
