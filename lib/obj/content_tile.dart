@@ -78,19 +78,18 @@ class _ContentTileState extends State<ContentTile> with AutomaticKeepAliveClient
           )
         ),
 
-        Padding(
-          padding: const EdgeInsets.all(8),
-          child: Row(
+        ListTile(
+          titleAlignment: .top,
+          title: Text(
+            widget.content.title,
+            style: Theme.of(context).textTheme.titleLarge,
+            maxLines: 1,
+            overflow: .ellipsis,
+          ),
+
+          trailing: Row(
+            mainAxisSize: .min,
             children: [
-              Expanded(
-                child: Text(
-                  widget.content.title,
-                  style: Theme.of(context).textTheme.titleLarge,
-                  maxLines: 1,
-                  overflow: .ellipsis,
-                )
-              ),
-              
               AnimatedScale(
                 scale: isAnimate ? 1.3 : 1.0, 
                 duration: const Duration(milliseconds: 200),
@@ -113,44 +112,45 @@ class _ContentTileState extends State<ContentTile> with AutomaticKeepAliveClient
                   ),
                 ),
               ),
-
+              
               Text(
                 widget.content.likeCount.toString(),
                 style: Theme.of(context).textTheme.bodyMedium
-              )
-            ],
-          )
-        ),
+              ),
+            ]
+          ),
 
-        Column(
-          children: [
-            widget.content.description.isNotEmpty ?
-            Padding(
-              padding: const EdgeInsets.all(8),
-              child: Text(
-                widget.content.description,
-                style: Theme.of(context).textTheme.bodyLarge,
-                maxLines: descExpanded ? null : 2,
-                overflow: descExpanded
-                            ? .visible
-                            : .ellipsis
-              )
-            ) : const SizedBox.shrink(),
-            
-            if (widget.content.description.length > 100)
-              TextButton(
-                onPressed: () {
-                  setState(() {
-                    descExpanded = !descExpanded;
-                  });
-                }, 
-                child: Text(
-                  descExpanded
-                        ? 'Show Less'
-                        : 'Show More'
-                )
-              )
-          ],
+          subtitle: widget.content.description.isNotEmpty 
+            ? Column(
+              crossAxisAlignment: .start,
+              children: [
+                Text(
+                  widget.content.description,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                  maxLines: descExpanded ? null : 2,
+                  overflow: descExpanded
+                              ? .visible
+                              : .ellipsis
+                ),
+
+                if (widget.content.description.length > 100)
+                  TextButton(
+                    onPressed: () {
+                      setState(() {
+                        descExpanded = !descExpanded;
+                      });
+                    }, 
+                    child: Text(
+                      descExpanded
+                            ? 'Show Less'
+                            : 'Show More'
+                    )
+                  )
+
+             ]
+            )
+
+            : const SizedBox.shrink(),
         ),
 
         Divider()
