@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:nadagram/db/models/content.dart';
 import 'package:nadagram/db/repositories/content.dart';
 import 'package:nadagram/external_state/accessible.dart';
-import 'package:nadagram/external_state/post.dart';
 
 class AddContent extends StatelessWidget {
   const AddContent({super.key});
@@ -44,7 +43,6 @@ class AddContent extends StatelessWidget {
                                   controller: titleController,
                                   decoration: InputDecoration(labelText: 'Title'),
                                   validator: (value) {
-                                    postNotifier.value = postNotifier.value.copyWith(isPost: false);
                                     if (value == null || value.trim().isEmpty) {
                                       return 'Title can not be empty.';
                                     }
@@ -66,7 +64,6 @@ class AddContent extends StatelessWidget {
                                 ValueListenableBuilder(
                                   valueListenable: accessibleNotifier, 
                                   builder: (context, error, _) {
-                                    postNotifier.value = postNotifier.value.copyWith(isPost: false);
                                     return TextFormField(
                                       controller: imageController,
                                       onChanged: (_) {
