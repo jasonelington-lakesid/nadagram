@@ -14,6 +14,7 @@ class AddContent extends StatelessWidget {
     final descController = TextEditingController();
     final imageController = TextEditingController();
     final formKey = GlobalKey<FormState>();
+    final isPosted = ValueNotifier(false);
     return ColoredBox(
       color: Theme.of(context).scaffoldBackgroundColor,
       child: Center(
@@ -79,54 +80,52 @@ class AddContent extends StatelessWidget {
                             ),
                             SizedBox(height: 12),
                             Center(
-                              child: ValueListenableBuilder<AddContentNotifier>(
-                                valueListenable: postNotifier, 
-                                child: Text('Uploading . . .'),
-                                builder: (context, state, _) {
+                              child: ValueListenableBuilder<bool>(
+                                valueListenable: isPosted,
+                                builder: (context, posting, _) {
                                   return ElevatedButton(
-                                    onPressed: state.isPost? null : 
-                                        () async {
-                                          postNotifier.value = postNotifier.value.copyWith(isPost: true);
-                                          if (!formKey.currentState!.validate()) {
-                                            postNotifier.value = postNotifier.value.copyWith(isPost: false, isValid: false);
-                                            return;
-                                          }
+                                    onPressed: posting
+                                      ? null
+                                      : () async {
+                                        isPosted.value = true;
 
-                                          if (imageController.text.isEmpty) {
-                                            postNotifier.value = postNotifier.value.copyWith(isPost: false, isValid: false);
-                                            accessibleNotifier.value = 'Image URL can not be empty';
-                                            return;
-                                          }
+                                        if (!formKey.currentState!.validate()) {
+                                          isPosted.value = false;
+                                          return;
+                                        }
 
-                                          final isAccessilbe = await contentRepo.validateImageAccessible(imageController.text);
-                                          if (!isAccessilbe) {
-                                            postNotifier.value = postNotifier.value.copyWith(isPost: false, isValid: false);
-                                            accessibleNotifier.value = 'Image URL is not valid or accessible.';
-                                            return;
-                                          }
+                                        if (titleController.text.isEmpty || imageController.text.isEmpty) {
+                                          isPosted.value = false;
+                                          return;
+                                        }
 
-                                          postNotifier.value = postNotifier.value.copyWith(isPost: true);
-                                          
-                                          final content = NadagramContent(
-                                            title: titleController.text, 
-                                            description: descController.text, 
-                                            imagePath: imageController.text, 
-                                            likeCount: 0
-                                          );
-                                          try {
-                                            await contentRepo.addNewContent(content);
-                                          } finally {
-                                            postNotifier.value = postNotifier.value.copyWith(
-                                              isPost: false, isValid: true
-                                            );
-                                          }
-                                          
-                                          if (!context.mounted) return;
-                                          Navigator.pop(context);
-                                        }, 
-                                    child: postNotifier.value.isValid 
-                                          ? const CircularProgressIndicator()
-                                          : Text('POST')
+                                        final isAccessible = await contentRepo.validateImageAccessible(imageController.text);
+                                        if (!isAccessible) {
+                                          isPosted.value = false;
+                                          return;
+                                        }
+
+                                        final content = NadagramContent(
+                                          title: titleController.text,
+                                          description: descController.text,
+                                          imagePath: imageController.text,
+                                          likeCount: 0
+                                        );
+
+                                        try {
+                                          await contentRepo.addNewContent(content);
+                                        } finally {
+                                          isPosted.value = false;
+                                        }
+
+                                        if (!context.mounted) {
+                                          return;
+                                        }
+                                        Navigator.pop(context);
+                                      },
+                                    child: posting
+                                      ? const CircularProgressIndicator()
+                                      : const Text('Post')
                                   );
                                 }
                               )
