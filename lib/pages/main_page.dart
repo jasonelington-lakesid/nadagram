@@ -31,78 +31,91 @@ class _MainLayoutPageState extends State<MainLayout> {
         return Scaffold(
           appBar: AppBar(
             toolbarHeight: 100,
-            title: Row (
-              children: [
-                if (!isSmall)
-                Text(
-                  'Nadagram',
-                  style: GoogleFonts.poppins(
-                    fontWeight: .bold,
-                    fontSize: 18,
-                  )
-                ),
-
-                if (!isSmall)
-                SizedBox(width: 8),
-
-                Expanded(
-                  child: SizedBox(
-                    child: TextField(
-                      decoration: InputDecoration(
-                        hintText: 'Search Post',
-                        prefixIcon: Icon(Icons.search),
-                        border: OutlineInputBorder(
-                          borderRadius: .circular(12)
-                        )
-                      ),
-                      onChanged: (value) {
-                        _debounce?.cancel();
-
-                        _debounce = Timer(
-                          Duration(milliseconds: 300),
-                          () {
-                            setState(() {
-                              keyword = value;
-                            });
-                          }
-                        );
-                      },
+            leadingWidth: 120,
+            leading: !isSmall 
+                ? Align (
+                  alignment: .center,
+                  child: Padding(
+                    padding: .only(
+                      left: 8,
                     ),
+                    child: Text(
+                      'Nadagram',
+                      style: GoogleFonts.poppins(
+                        fontWeight: .bold,
+                        fontSize: 18,
+                      )
+                    )
+                  )
+                )
+                : null,
+            title: SizedBox(
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: 'Search Post',
+                  prefixIcon: Icon(Icons.search),
+                  border: OutlineInputBorder(
+                    borderRadius: .circular(12)
                   )
                 ),
-                
-                if (!isSuperSmall)
-                IconButton(
-                  icon: Icon(
-                    userRepo.getDarkMode()
-                        ? Icons.light_mode
-                        : Icons.dark_mode
-                  ),
-                  onPressed: () async {
-                    final isDark = themeModeNotifier.value != ThemeMode.dark;
-                    themeModeNotifier.value = isDark
-                        ? ThemeMode.dark
-                        : ThemeMode.light;
-                    userRepo.setDarkMode(isDark);
-                    setState(() {});
-                  },
-                ),
+                onChanged: (value) {
+                  _debounce?.cancel();
 
-                IconButton(
-                  onPressed: () async {
-                    await Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const AddContent()
-                      )
-                    ); 
-
-                    setState(() {});
-                  },
-                  icon: Icon(Icons.add)
-                ),
-              ],
+                  _debounce = Timer(
+                    Duration(milliseconds: 300),
+                    () {
+                      setState(() {
+                        keyword = value;
+                      });
+                    }
+                  );
+                },
+              ),
             ),
+
+            actions: [
+              Padding(
+                padding: .only(
+                  right: 8
+                ),
+                child: !isSuperSmall
+                  ? Row(
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          userRepo.getDarkMode()
+                              ? Icons.light_mode
+                              : Icons.dark_mode
+                        ),
+                        onPressed: () async {
+                          final isDark = themeModeNotifier.value != ThemeMode.dark;
+                          themeModeNotifier.value = isDark
+                              ? ThemeMode.dark
+                              : ThemeMode.light;
+                          userRepo.setDarkMode(isDark);
+                          setState(() {});
+                        },
+                      ),
+
+                      IconButton(
+                        onPressed: () async {
+                          await Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const AddContent()
+                            )
+                          ); 
+
+                          setState(() {});
+                        },
+                        icon: Icon(Icons.add)
+                      ),
+                    ]
+                  )
+                  : null,
+              ) 
+            ],
+
           ),
 
           body: SafeArea(
